@@ -19,12 +19,10 @@ const servicios = [
 const serviciosReservados = [];
 
 class Habitacion {
-    constructor(numero, capacidad, precio, fachaEntrada, fechaSalida, disponible) {
+    constructor(numero, capacidad, precio, disponible) {
         this.numero = numero; //Numero de la habitacion
         this.capacidad = capacidad; // Capacidad máxima de personas en la habitación
         this.precio = precio; // Precio base de la habitación
-        this.fechaEntrada = fachaEntrada;
-        this.fechaSalida = fechaSalida;
         this.disponible = disponible; // Indica si la habitación está disponible
     }
     
@@ -69,11 +67,13 @@ function calculaTarifa(cantDias) {
     }
     return tarifa;
 }
+// Ejemplo de uso
 
-const habitaciones = {
-    habitacion1: new HabitacionUnaEstrella(1, 4, 50, '2023-09-20', '2023-09-25', true),
-    habitacion2: new HabitacionDosEstrellas(2, 4, 100,'2023-09-20', '2023-09-25', false),
-    habitacion3: new HabitacionTresEstrellas(3, 4, 150, '2023-09-20', '2023-09-25', true)
+
+const habitaciones = {// *** CONSULTAR SI SE PUEDE CONVERTIR EN ARRAY CON LA PROPIEDAD ***
+    habitacion1Estrella: new HabitacionUnaEstrella(1, 4, 50, true),
+    habitacion2Estrellas: new HabitacionDosEstrellas(2, 4, 100, false),
+    habitacion3Estrellas: new HabitacionTresEstrellas(3, 4, 150, true)
 };
 
 // Convertir el objeto de habitaciones en dos arrays 
@@ -245,53 +245,3 @@ Nombre: ${nombreSolicitante}
 \nReserva: Habitación ${habitacionSeleccionada.numero}
 \nCategoria: ${categHab}
 \nTarifa total: $${tarifa}`); 
-
-// Obtén elementos del DOM
-const prevMonth = document.getElementById("prevMonth");
-const nextMonth = document.getElementById("nextMonth");
-const monthYear = document.getElementById("monthYear");
-const calendarDays = document.getElementById("calendarDays");
-
-// Crear un objeto de fecha
-const currentDate = new Date();
-
-// Función para mostrar el calendario del mes actual
-function showCalendar() {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    // Configurar el encabezado del mes y año
-    monthYear.innerHTML = new Date(year, month, 1).toLocaleDateString('es', { month: 'long', year: 'numeric' });
-
-    // Obtener el primer día del mes y el último día del mes
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDay = new Date(year, month + 1, 0).getDate();
-
-    // Generar días del calendario
-    let calendarHTML = "";
-    for (let day = 1; day <= lastDay; day++) {
-        calendarHTML += `<div>${day}</div>`;
-    }
-
-    // Agregar días en blanco al principio (según el primer día de la semana)
-    for (let i = 0; i < firstDay; i++) {
-        calendarHTML = `<div></div>` + calendarHTML;
-    }
-
-    // Agregar días al contenedor del calendario
-    calendarDays.innerHTML = calendarHTML;
-}
-
-// Mostrar calendario al cargar la página
-showCalendar();
-
-// Eventos para cambiar de mes
-prevMonth.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    showCalendar();
-});
-
-nextMonth.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    showCalendar();
-});
