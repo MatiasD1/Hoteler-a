@@ -1,0 +1,63 @@
+/* Estilos generales para el calendario */
+.calendar {
+    max-width: 300px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.month {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+#prevMonth, #nextMonth {
+    cursor: pointer;
+}
+
+.weekdays {
+    display: flex;
+    justify-content: space-between;
+    background-color: #555;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 5px;
+}
+
+.days div {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Estilo para resaltar el día actual */
+.days div.today {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Estilos para días seleccionados */
+.days div.selected {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* Estilos para días de la semana */
+.days div:nth-child(7n), .days div:nth-child(7n+1) {
+    color: red;
+}
+
+/* Estilos para días no seleccionables */
+.days div.disabled {
+    color: gray;
+    pointer-events: none;
+}
