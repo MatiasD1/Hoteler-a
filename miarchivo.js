@@ -8,14 +8,6 @@ let cantDias;
 let habitacionSeleccionada;
 let categHab; 
 
-const costoHabitacion = 300;
-
-const servicios = [
-    { servicio: 'Gimnasio', precio: 200 },
-    { servicio: 'Spa', precio: 400 },
-    { servicio: 'Clases de Surf', precio: 500 }
-];
-
 const serviciosReservados = [];
 
 class Habitacion {
@@ -27,53 +19,47 @@ class Habitacion {
         this.fechaSalida = fechaSalida;
         this.disponible = disponible; // Indica si la habitación está disponible
     }
-    
 }
+
+// ... (código previo)
 
 // Subclase para habitaciones categoria Bronce
 class HabitacionUnaEstrella extends Habitacion {
-    constructor(numero, capacidad, precio, disponible) {
-        super(numero, capacidad, precio, disponible);
-        this.categoria = "Bronce";//this en el constructor
-        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n"];
+    constructor(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible) {
+        super(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible);
+        this.categoria = "Bronce";
+        this.servicios = ["Servicio a la habitación", "Wi-Fi gratuito", "Televisión por cable"];
     }
 }
 
 // Subclase para habitaciones categoria Plata
 class HabitacionDosEstrellas extends Habitacion {
-    constructor(numero, capacidad, precio, disponible) {
-        super(numero, capacidad, precio, disponible);
+    constructor(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible) {
+        super(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible);
         this.categoria = "Plata";
-        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n", "Balcón privado\n", "Mini bar\n", "Servicio de transporte local\n"];
+        this.servicios = ["Servicio a la habitación", "Wi-Fi gratuito", "Televisión por cable", "Balcón privado", "Mini bar", "Servicio de transporte local"];
     }
 }
 
 // Subclase para habitaciones categoria Oro
 class HabitacionTresEstrellas extends Habitacion {
-    constructor(numero, capacidad, precio, disponible) {
-        super(numero, capacidad, precio, disponible);
+    constructor(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible) {
+        super(numero, capacidad, precio, fechaEntrada, fechaSalida, disponible);
         this.categoria = "Oro";
-        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n", "Balcón privado\n", "Mini bar\n", "Servicio de transporte local\n", "Servicio de transporte al aeropuerto\n", "Jacuzzi\n", "Vista al mar\n"];
+        this.servicios = ["Servicio a la habitación", "Wi-Fi gratuito", "Televisión por cable", "Balcón privado", "Mini bar", "Servicio de transporte local", "Servicio de transporte al aeropuerto", "Jacuzzi", "Vista al mar"];
     }
 }
-function calculaTarifa(cantDias) {
-    let tarifa = cantDias * costoHabitacion; // Tarifa base por la habitación
 
-    for (let i = 0; i < serviciosReservados.length; i++) {
-        for (let j = 0; j < servicios.length; j++) {
-            if (serviciosReservados[i] === servicios[j].servicio) {
-                tarifa += servicios[j].precio;
-                break; // Salir del bucle interno cuando se encuentre el servicio
-            }
-        }
-    }
-    return tarifa;
-}
+// ... (resto del código)
+
+// ... (resto del código)
 
 const habitaciones = {
     habitacion1: new HabitacionUnaEstrella(1, 4, 50, '2023-09-20', '2023-09-25', true),
-    habitacion2: new HabitacionDosEstrellas(2, 4, 100,'2023-09-20', '2023-09-25', false),
-    habitacion3: new HabitacionTresEstrellas(3, 4, 150, '2023-09-20', '2023-09-25', true)
+    habitacion2: new HabitacionDosEstrellas(2, 4, 100, null, null, false),
+    habitacion3: new HabitacionTresEstrellas(3, 4, 150, '2023-09-20', '2023-09-25', true),
+    habitacion4: new HabitacionDosEstrellas(4, 4, 100, null, null, false),
+    habitacion5: new HabitacionTresEstrellas(5, 4, 150, '2023-09-20', '2023-09-25', true),
 };
 
 // Convertir el objeto de habitaciones en dos arrays 
@@ -81,16 +67,6 @@ const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion =>
 const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
 
 let CantHabitacionesDisponibles = habitacionesDisponibles.length;
-
-/*for (let i = 0; i < habitacionesDisponibles.length; i++) {
-    const habitacion = habitacionesDisponibles[i];
-    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
-}
-
-for (let i = 0; i < habitacionesNoDisponibles.length; i++) {
-    const habitacion = habitacionesNoDisponibles[i];
-    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
-}*/
 
 //SITIO WEB
 alert("Hotel Viña del Mar ~~~ Realizar Reserva")
@@ -107,49 +83,6 @@ while(true){
     else
         break;
 }
-            
-//El usuario indica la cantidad de días que reservará 
-while (true) {
-    cantDias = Number(prompt("Cantidad de días: "));
-    if (isNaN(cantDias) || cantDias <= 0) 
-        alert("Por favor, ingrese un dato válido.");
-    else if(cantDias > 15)
-        alert("Lo sentimos. No es posible reservar una estadía mayor a 15 días");
-    else 
-        break;
-}
-
-    // El usuario ingresa la cantidad de personas que se hospedarán
-while (true) {
-    
-    const categ = Number(prompt("Seleccione la categoría de habitación:\n\n 1-Bronce\n 2-Plata\n 3-Oro\n"));
-    if (isNaN(categ) || categ < 1 || categ > 3)  {
-        alert("Por favor, ingrese una opción válida.");
-    } else { 
- 
-            switch (categ) {
-                case 1:
-                    respuesta = prompt("Servicio Bronce\n\n- Servicio a la habitación\n- Wi-Fi gratuito\n- Televisión por cable\n\nDesea confirmar su selección? S/N").toUpperCase();
-                    categHab = 'Bronce';
-                    break;
-                case 2:
-                    respuesta = prompt("Servicio Plata\n\n- Servicio a la habitación\n- Wi-Fi gratuito\n- Televisión por cable\n- Balcón privado\n- Mini bar\n- Servicio de transporte local\n\nDesea confirmar su selección? S/N").toUpperCase();
-                    categHab = 'Plata';
-                    break;
-                case 3:
-                    respuesta = prompt("Servicio Plata\n\n- Servicio a la habitación\n- Wi-Fi gratuito\n- Televisión por cable\n- Balcón privado\n- Mini bar\n- Servicio de transporte local\n- Servicio de transporte al aeropuerto\n- Jacuzzi\n- Vista al mar\n\nDesea confirmar su selección? S/N").toUpperCase();
-                    categHab = 'Oro';
-                    break;
-            }   
-        }
-        if (respuesta === "S") {  
-            alert("Usted ha reservado la categoria " + categHab + "."); 
-            break;
-        }
-        else if(respuesta !== "N")
-            alert("Opción no válida. Por favor, seleccione una opción válida.");
-}
-
 while(true){ 
 
         //Busca si hay una habitacion disponible 
@@ -173,78 +106,10 @@ while(true){
            
 } 
 
-//El usuario selecciona el tipo de servicio para su estadía
-while (true) {
-    respuesta = prompt("Desea añadir servicios especiales a su estadía? S/N").toUpperCase();
-    if (respuesta === "S") {
-        let opcion, opcion2;
-        let cantServicios = 0;
-        while (opcion !== "0") {
-            opcion = prompt("Indique el número del servicio a reservar:\n\n1- Gimnasio $"+ servicios[0].precio + " \n2- Spa $"+ servicios[1].precio +"\n3- Clases de Surf $"+ servicios[2].precio + "\n0- Finalizar\n\nIngrese el número de opción:");
-            switch (opcion) {
-                case "1":
-                    if(serviciosReservados.includes("Gimnasio")){
-                        alert("Usted ya ha seleccionado este servicio.");
-                        break;
-                    }
-                    serviciosReservados.push("Gimnasio");
-                    cantServicios++;
-                    break;
-                case "2":
-                    if(serviciosReservados.includes("Spa")){
-                        alert("Usted ya ha seleccionado este servicio.");
-                        break;
-                    }
-                    serviciosReservados.push("Spa");
-                    cantServicios++;
-                    break;
-                case "3":
-                    if(serviciosReservados.includes("Clases de Surf")){
-                        alert("Usted ya ha seleccionado este servicio.");
-                        break;
-                    }
-                    serviciosReservados.push("Clases de Surf");
-                    cantServicios++;
-                    break;
-                case "0":
-                    if(cantServicios === 0){
-                        opcion2 = prompt("No ha añadido ningún servicio ¿Seguro que desea continuar (S/N)?").toUpperCase();
-                        switch (opcion2){
-                            case "S":
-                                break;
-                            case "N":
-                                opcion = 4;
-                                break;
-                            default:
-                                alert("Opción no válida. Por favor, seleccione una opción válida."); 
-                                break;
-                        }
-                    }
-                    // El usuario seleccionó finalizar
-                    break;
-                default:
-                    alert("Opción no válida. Por favor, seleccione una opción válida.");
-                    break;
-            }
-        }
-        break;
-    }
-    else if(respuesta !== "N")
-        alert("Opción no válida. Por favor, seleccione una opción válida.");
-    else
-        break;
-}
-
-const tarifa = calculaTarifa(cantDias);
-
 alert(`RESUMEN DE LA RESERVA\n
 Nombre: ${nombreSolicitante}
-\nCantidad de Personas: ${cantPers}` + 
-(serviciosReservados.length !== 0 ? "\n\nServicios Especiales:" + serviciosReservados.map(servicio => "\n- " + servicio).join("") : "") + //map toma cada servicio y lo transforma en una cadena que comienza con un guión ("- ") //.join("") sirve para unir todas estas cadenas en una sola, sin ningún carácter de separación adicional.  
-`\n\nCantidad de Días: ${cantDias}
 \nReserva: Habitación ${habitacionSeleccionada.numero}
-\nCategoria: ${categHab}
-\nTarifa total: $${tarifa}`); 
+\nCategoria: ${categHab}`); 
 
 // Obtén elementos del DOM
 const prevMonth = document.getElementById("prevMonth");
@@ -252,7 +117,7 @@ const nextMonth = document.getElementById("nextMonth");
 const monthYear = document.getElementById("monthYear");
 const calendarDays = document.getElementById("calendarDays");
 
-// Crear un objeto de fecha
+// Crear un objeto de la fecha actual
 const currentDate = new Date();
 
 // Función para mostrar el calendario del mes actual
@@ -270,16 +135,38 @@ function showCalendar() {
     // Generar días del calendario
     let calendarHTML = "";
     for (let day = 1; day <= lastDay; day++) {
-        calendarHTML += `<div>${day}</div>`;
+        // Agregar un identificador único a cada día
+        const dayId = `day-${day}`;
+        calendarHTML += `<div id="${dayId}" class="calendar-day">${day}</div>`;
     }
 
     // Agregar días en blanco al principio (según el primer día de la semana)
     for (let i = 0; i < firstDay; i++) {
-        calendarHTML = `<div></div>` + calendarHTML;
+        calendarHTML = '<div></div>' + calendarHTML;
     }
 
     // Agregar días al contenedor del calendario
     calendarDays.innerHTML = calendarHTML;
+
+    // Agregar evento de clic a cada día
+    for (let day = 1; day <= lastDay; day++) {
+        const dayId = `day-${day}`;
+        const dayElement = document.getElementById(dayId);
+
+        // Agregar evento de clic
+        dayElement.addEventListener("click", () => {
+            // Realiza acciones cuando un día es seleccionado
+            if (dayElement.classList.contains("selected")) {
+                // Si ya está seleccionado, desmárcalo
+                dayElement.classList.remove("selected");
+                // Aquí puedes eliminar el día de la lista de días seleccionados
+            } else {
+                // Si no está seleccionado, márquelo
+                dayElement.classList.add("selected");
+                // Aquí puedes agregar el día a la lista de días seleccionados
+            }
+        });
+    }
 }
 
 // Mostrar calendario al cargar la página
