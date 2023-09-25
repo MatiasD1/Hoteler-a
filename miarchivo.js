@@ -67,7 +67,7 @@ const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion =>
 const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
 
 let CantHabitacionesDisponibles = habitacionesDisponibles.length;
-
+/*
 //SITIO WEB
 alert("Hotel Viña del Mar ~~~ Realizar Reserva")
 
@@ -110,7 +110,7 @@ alert(`RESUMEN DE LA RESERVA\n
 Nombre: ${nombreSolicitante}
 \nReserva: Habitación ${habitacionSeleccionada.numero}
 \nCategoria: ${categHab}`); 
-
+*/
 // Obtén elementos del DOM
 const prevMonth = document.getElementById("prevMonth");
 const nextMonth = document.getElementById("nextMonth");
@@ -173,9 +173,14 @@ function showCalendar() {
 showCalendar();
 
 // Eventos para cambiar de mes
-prevMonth.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    showCalendar();
+const mesAnterior = currentDate.getMonth() - 1;
+const anioActual = currentDate.getFullYear(); 
+
+prevMonth.addEventListener("click", () => {//ejecuta la funcion cuando escucha un click
+    if(((currentDate.getMonth() - 1 ) !== mesAnterior) || ((currentDate.getMonth() - 1 ) === mesAnterior) && (currentDate.getFullYear() !== anioActual)){
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        showCalendar();
+    }
 });
 
 nextMonth.addEventListener("click", () => {
