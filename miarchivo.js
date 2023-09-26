@@ -111,7 +111,7 @@ Nombre: ${nombreSolicitante}
 \nReserva: Habitación ${habitacionSeleccionada.numero}
 \nCategoria: ${categHab}`); 
 */
-// Obtén elementos del DOM
+// Obtiene del DOM las flechas, el año con el mes y los dias del calendario que se generan dinámicamente(todo lo que se utilizará acá)
 const prevMonth = document.getElementById("prevMonth");
 const nextMonth = document.getElementById("nextMonth");
 const monthYear = document.getElementById("monthYear");
@@ -120,19 +120,23 @@ const calendarDays = document.getElementById("calendarDays");
 // Crear un objeto de la fecha actual
 const currentDate = new Date();
 
-// Función para mostrar el calendario del mes actual
+// Guardo el mes anterior y el anio actual para cuando haya que controlar la seleccion de los dias y para cuando haya que cambiar el mes 
+const mesAnterior = currentDate.getMonth() - 1;
+const anioActual = currentDate.getFullYear(); 
+
+// Función para generar y mostrar el calendario del mes actual
 function showCalendar() {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();//obtiene el anio actual
+    const month = currentDate.getMonth();//obtiene el mes actual
 
     // Configurar el encabezado del mes y año
-    monthYear.innerHTML = new Date(year, month, 1).toLocaleDateString('es', { month: 'long', year: 'numeric' });
+    monthYear.innerHTML = new Date(year, month, 1).toLocaleDateString('es', { month: 'long', year: 'numeric' });//configura el encabezado del calendario con el mes y el anio actuales
 
     // Obtener el primer día del mes y el último día del mes
     const firstDay = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month + 1, 0).getDate();
 
-    // Generar días del calendario
+    // Generar días del calendario y los agrega al contenedor calendarDays
     let calendarHTML = "";
     for (let day = 1; day <= lastDay; day++) {
         // Agregar un identificador único a cada día
@@ -148,33 +152,63 @@ function showCalendar() {
     // Agregar días al contenedor del calendario
     calendarDays.innerHTML = calendarHTML;
 
-    // Agregar evento de clic a cada día
+    // Define un array para almacenar los días seleccionados
+    const diasSeleccionados = [];
+
+    let lastSelectedDay = null; // Almacenar el último día seleccionado
+    
     for (let day = 1; day <= lastDay; day++) {
         const dayId = `day-${day}`;
         const dayElement = document.getElementById(dayId);
-
+    
         // Agregar evento de clic
         dayElement.addEventListener("click", () => {
             // Realiza acciones cuando un día es seleccionado
-            if (dayElement.classList.contains("selected")) {
-                // Si ya está seleccionado, desmárcalo
-                dayElement.classList.remove("selected");
-                // Aquí puedes eliminar el día de la lista de días seleccionados
-            } else {
-                // Si no está seleccionado, márquelo
-                dayElement.classList.add("selected");
-                // Aquí puedes agregar el día a la lista de días seleccionados
+            if (diasSeleccionados.length === 0 || Math.abs(day - diasSeleccionados[diasSeleccionados.length - 1]) === 1 || Math.abs(diasSeleccionados[0] - day) === 1) {
+                // Verifica si es el primer día seleccionado o si es consecutivo al último
+                if (dayElement.classList.contains("selected")) {
+                    // Si ya está seleccionado, desmárcalo
+                    dayElement.classList.remove("selected");
+        
+                    // Verifica si el día que se hace clic es el primero o el último en el rango seleccionado
+                    if (day === diasSeleccionados[0]) {
+                        // Es el primer día, elimínalo del principio del array
+                        diasSeleccionados.shift();
+                    } else if (day === diasSeleccionados[diasSeleccionados.length - 1]) {
+                        // Es el último día, elimínalo del final del array
+                        diasSeleccionados.pop();
+                    } else {
+                        // Elimina el día de la lista de días seleccionados
+                        const index = diasSeleccionados.indexOf(day);
+                        if (index !== -1) {
+                            diasSeleccionados.splice(index, 1);
+                        }
+                    }
+                } else if (diasSeleccionados.length < 15) {
+                    // Si no está seleccionado, márquelo
+                    dayElement.classList.add("selected");
+        
+                    // Agrega el día a la lista de días seleccionados
+                    diasSeleccionados.push(day);
+                    diasSeleccionados.sort((a, b) => a - b);
+                } else {
+                    alert("No es posible realizar reservas para una estadía mayor a 15 días.");
+                }
             }
         });
-    }
-}
+        
+                }
+            }
+        
+    
+        
+            
+            
 
 // Mostrar calendario al cargar la página
 showCalendar();
 
 // Eventos para cambiar de mes
-const mesAnterior = currentDate.getMonth() - 1;
-const anioActual = currentDate.getFullYear(); 
 
 prevMonth.addEventListener("click", () => {//ejecuta la funcion cuando escucha un click
     if(((currentDate.getMonth() - 1 ) !== mesAnterior) || ((currentDate.getMonth() - 1 ) === mesAnterior) && (currentDate.getFullYear() !== anioActual)){

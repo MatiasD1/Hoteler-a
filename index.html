@@ -8,13 +8,13 @@
 </head>
 <body>
     <h1>Hotel Viña del Mar</h1>
-    <div class="calendar">
+    <div class="calendar"><!-- Creo una clase para aplicar estilos CSS, agrupar elementos similares o identificarlos en JS -->
         <div class="month">
-            <span id="prevMonth">&#10094;</span>
-            <h2 id="monthYear"></h2>
-            <span id="nextMonth">&#10095;</span>
+            <span id="prevMonth">&#10094;</span><!--flecha a la izq-->
+            <h2 id="monthYear"></h2><!-- mes con el anio-->
+            <span id="nextMonth">&#10095;</span><!--flecha a la der-->
         </div>
-        <div class="weekdays">
+        <div class="weekdays"><!--contenedor de los dias de la semana-->
             <div>Dom</div>
             <div>Lun</div>
             <div>Mar</div>
@@ -23,7 +23,7 @@
             <div>Vie</div>
             <div>Sáb</div>
         </div>
-        <div class="days" id="calendarDays"></div>
+        <div class="days" id="calendarDays"></div><!--contenedor donde se generan dinamicamente los dias en JS-->
     </div>
     <script src="miarchivo.js"></script>
 </body>
