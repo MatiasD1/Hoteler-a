@@ -162,43 +162,40 @@ function showCalendar() {
         const dayElement = document.getElementById(dayId);
     
         // Agregar evento de clic
-        dayElement.addEventListener("click", () => {
+        dayElement.addEventListener("click", () => { 
             // Realiza acciones cuando un día es seleccionado
-            if (diasSeleccionados.length === 0 || Math.abs(day - diasSeleccionados[diasSeleccionados.length - 1]) === 1 || Math.abs(diasSeleccionados[0] - day) === 1) {
+            
+            if ((diasSeleccionados.length === 0) || ((Math.abs(day - diasSeleccionados[diasSeleccionados.length-1]) === 1) || (Math.abs(diasSeleccionados[0] - day) === 1))) {
                 // Verifica si es el primer día seleccionado o si es consecutivo al último
-                if (dayElement.classList.contains("selected")) {
-                    // Si ya está seleccionado, desmárcalo
-                    dayElement.classList.remove("selected");
-        
-                    // Verifica si el día que se hace clic es el primero o el último en el rango seleccionado
-                    if (day === diasSeleccionados[0]) {
-                        // Es el primer día, elimínalo del principio del array
-                        diasSeleccionados.shift();
-                    } else if (day === diasSeleccionados[diasSeleccionados.length - 1]) {
-                        // Es el último día, elimínalo del final del array
-                        diasSeleccionados.pop();
-                    } else {
-                        // Elimina el día de la lista de días seleccionados
-                        const index = diasSeleccionados.indexOf(day);
-                        if (index !== -1) {
-                            diasSeleccionados.splice(index, 1);
-                        }
-                    }
-                } else if (diasSeleccionados.length < 15) {
+                console.log(day);
+                console.log(diasSeleccionados[diasSeleccionados.length-1]);
+                
+                if((!dayElement.classList.contains("selected")) && (diasSeleccionados.length < 15 )){
                     // Si no está seleccionado, márquelo
+                    console.log('entra');
                     dayElement.classList.add("selected");
-        
+    
                     // Agrega el día a la lista de días seleccionados
                     diasSeleccionados.push(day);
                     diasSeleccionados.sort((a, b) => a - b);
-                } else {
-                    alert("No es posible realizar reservas para una estadía mayor a 15 días.");
                 }
+                else
+                    alert("No es posible realizar reservas para una estadía mayor a 15 días."); 
+            }
+            if (dayElement.classList.contains("selected")) {// Si ya está seleccionado, desmárcalo
+                        
+                // Elimínalo del array
+                        const index = diasSeleccionados.indexOf(day);
+                        console.log(index);
+                        if ((index === 0) || (index === (diasSeleccionados.length-1))) {
+                            dayElement.classList.remove("selected");
+                            diasSeleccionados.splice(index, 1);
+                        }
+                    
             }
         });
-        
-                }
-            }
+    }
+}
         
     
         
