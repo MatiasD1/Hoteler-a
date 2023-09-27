@@ -177,7 +177,7 @@ function showCalendar() {
                     } else if (day === diasSeleccionados[diasSeleccionados.length - 1]) {
                         // Es el último día, elimínalo del final del array
                         diasSeleccionados.pop();
-                    } else {
+            
                         // Elimina el día de la lista de días seleccionados
                         const index = diasSeleccionados.indexOf(day);
                         if (index !== -1) {
@@ -195,15 +195,13 @@ function showCalendar() {
                     alert("No es posible realizar reservas para una estadía mayor a 15 días.");
                 }
             }
+            console.log(diasSeleccionados); 
         });
         
-                }
-            }
+    }
+}
         
-    
-        
-            
-            
+           
 
 // Mostrar calendario al cargar la página
 showCalendar();
