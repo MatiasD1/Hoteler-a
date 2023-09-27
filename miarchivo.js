@@ -7,6 +7,7 @@ let cantPers;
 let cantDias;
 let habitacionSeleccionada;
 let categHab; 
+let salir = false; 
 
 const serviciosReservados = [];
 
@@ -20,8 +21,6 @@ class Habitacion {
         this.disponible = disponible; // Indica si la habitación está disponible
     }
 }
-
-// ... (código previo)
 
 // Subclase para habitaciones categoria Bronce
 class HabitacionUnaEstrella extends Habitacion {
@@ -50,72 +49,12 @@ class HabitacionTresEstrellas extends Habitacion {
     }
 }
 
-// ... (resto del código)
-
-// ... (resto del código)
-
-const habitaciones = {
-    habitacion1: new HabitacionUnaEstrella(1, 4, 50, '2023-09-20', '2023-09-25', true),
-    habitacion2: new HabitacionDosEstrellas(2, 4, 100, null, null, false),
-    habitacion3: new HabitacionTresEstrellas(3, 4, 150, '2023-09-20', '2023-09-25', true),
-    habitacion4: new HabitacionDosEstrellas(4, 4, 100, null, null, false),
-    habitacion5: new HabitacionTresEstrellas(5, 4, 150, '2023-09-20', '2023-09-25', true),
-};
-
-// Convertir el objeto de habitaciones en dos arrays 
-const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === true);
-const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
-
-let CantHabitacionesDisponibles = habitacionesDisponibles.length;
-/*
-//SITIO WEB
-alert("Hotel Viña del Mar ~~~ Realizar Reserva")
-
-//El usuario ingresa sus datos (simplificado en este caso en "nombre")
-while (nombreSolicitante.trim() === "")//trim se asegura de que no haya espacios adicionales innecesarios alrededor del texto
-    nombreSolicitante = prompt("Por favor, ingrese su nombre: ");
-
-while(true){
-
-    cantPers = Number(prompt("Cantidad de personas: "));
-    if (isNaN(cantPers) || cantPers < 1 || cantPers > 4)  
-        alert("Por favor, ingrese una cantidad válida.");
-    else
-        break;
-}
-while(true){ 
-
-        //Busca si hay una habitacion disponible 
-        if (CantHabitacionesDisponibles > 0){ 
-            respuesta = prompt("Habitaciones disponibles:\n" + habitacionesDisponibles.map((habitacion, index) => `${index + 1} - Habitación ${habitacionesDisponibles[index].numero}`).join("\n") + "\nIngrese el número de la opción de la habitación que desea reservar");
-            const indice = parseInt(respuesta) - 1;
-            if (!isNaN(indice) && indice >= 0 && indice < habitacionesDisponibles.length) {
-                habitacionesDisponibles[indice].disponible = false; 
-                CantHabitacionesDisponibles--; //Decrementa la cantidad de habitaciones disponibles
-                habitacionSeleccionada = habitacionesDisponibles[indice];
-                habitacionesDisponibles.splice(indice, 1);
-                habitacionesNoDisponibles.push(habitacionSeleccionada); 
-                //alert("Habitación " + habitacionSeleccionada.numero + " reservada exitosamente");
-                break;
-            } else 
-                alert(`Por favor, ingrese una opción válida.`);
-            
-        }
-        else
-            alert("Lo sentimos, no hay habitaciones disponibles en este momento."); 
-           
-} 
-
-alert(`RESUMEN DE LA RESERVA\n
-Nombre: ${nombreSolicitante}
-\nReserva: Habitación ${habitacionSeleccionada.numero}
-\nCategoria: ${categHab}`); 
-*/
 // Obtiene del DOM las flechas, el año con el mes y los dias del calendario que se generan dinámicamente(todo lo que se utilizará acá)
 const prevMonth = document.getElementById("prevMonth");
 const nextMonth = document.getElementById("nextMonth");
 const monthYear = document.getElementById("monthYear");
 const calendarDays = document.getElementById("calendarDays");
+const calendario = document.getElementById("calendario");
 
 // Crear un objeto de la fecha actual
 const currentDate = new Date();
@@ -166,7 +105,7 @@ function showCalendar() {
             // Realiza acciones cuando un día es seleccionado
             if (diasSeleccionados.length === 0 || Math.abs(day - diasSeleccionados[diasSeleccionados.length - 1]) === 1 || Math.abs(diasSeleccionados[0] - day) === 1) {
                 // Verifica si es el primer día seleccionado o si es consecutivo al último
-                if (dayElement.classList.contains("selected")) {
+            /*   if (dayElement.classList.contains("selected")) {
                     // Si ya está seleccionado, desmárcalo
                     dayElement.classList.remove("selected");
         
@@ -184,7 +123,7 @@ function showCalendar() {
                             diasSeleccionados.splice(index, 1);
                         }
                     }
-                } else if (diasSeleccionados.length < 15) {
+                } else*/ if (diasSeleccionados.length < 15) {
                     // Si no está seleccionado, márquelo
                     dayElement.classList.add("selected");
         
@@ -195,16 +134,95 @@ function showCalendar() {
                     alert("No es posible realizar reservas para una estadía mayor a 15 días.");
                 }
             }
-            console.log(diasSeleccionados); 
         });
         
     }
+    
+    if (salir) {
+        alert("toy por salir");
+        return; // Sal de la función si debeSalir es true
+    }
+    alert("toy abajo");
 }
+
+const habitaciones = {
+    habitacion1: new HabitacionUnaEstrella(1, 4, 50, '2023-09-20', '2023-09-25', true),
+    habitacion2: new HabitacionDosEstrellas(2, 4, 100, null, null, false),
+    habitacion3: new HabitacionTresEstrellas(3, 4, 150, '2023-09-20', '2023-09-25', true),
+    habitacion4: new HabitacionDosEstrellas(4, 4, 100, null, null, false),
+    habitacion5: new HabitacionTresEstrellas(5, 4, 150, '2023-09-20', '2023-09-25', true),
+};
+
+// Convertir el objeto de habitaciones en dos arrays 
+const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === true);
+const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
+
+let CantHabitacionesDisponibles = habitacionesDisponibles.length;
+
+//SITIO WEB
+alert("Hotel Viña del Mar ~~~ Realizar Reserva")
+
+//El usuario ingresa sus datos (simplificado en este caso en "nombre")
+while (nombreSolicitante.trim() === "")//trim se asegura de que no haya espacios adicionales innecesarios alrededor del texto
+    nombreSolicitante = prompt("Por favor, ingrese su nombre: ");
+
+while(true){
+
+    cantPers = Number(prompt("Cantidad de personas: "));
+    if (isNaN(cantPers) || cantPers < 1 || cantPers > 4)  
+        alert("Por favor, ingrese una cantidad válida.");
+    else
+        break;
+}
+
+
+
+showCalendar();
+const botonAceptar = document.getElementById("BotonAceptar");
+    botonAceptar.addEventListener("click", () => {
+        salir = true;
+        calendario.style.display = 'none';
+    });
+alert("sali de la funcion!");
+
+
+
+
+
+while(true){ 
+
+        //Busca si hay una habitacion disponible 
+        if (CantHabitacionesDisponibles > 0){ 
+            respuesta = prompt("Habitaciones disponibles:\n" + habitacionesDisponibles.map((habitacion, index) => `${index + 1} - Habitación ${habitacionesDisponibles[index].numero}`).join("\n") + "\nIngrese el número de la opción de la habitación que desea reservar");
+            const indice = parseInt(respuesta) - 1;
+            if (!isNaN(indice) && indice >= 0 && indice < habitacionesDisponibles.length) {
+                habitacionesDisponibles[indice].disponible = false; 
+                CantHabitacionesDisponibles--; //Decrementa la cantidad de habitaciones disponibles
+                habitacionSeleccionada = habitacionesDisponibles[indice];
+                habitacionesDisponibles.splice(indice, 1);
+                habitacionesNoDisponibles.push(habitacionSeleccionada); 
+                //alert("Habitación " + habitacionSeleccionada.numero + " reservada exitosamente");
+                break;
+            } else 
+                alert(`Por favor, ingrese una opción válida.`);
+            
+        }
+        else
+            alert("Lo sentimos, no hay habitaciones disponibles en este momento."); 
+           
+} 
+
+alert(`RESUMEN DE LA RESERVA\n
+Nombre: ${nombreSolicitante}
+\nReserva: Habitación ${habitacionSeleccionada.numero}
+\nCategoria: ${categHab}`); 
+
+
         
            
 
 // Mostrar calendario al cargar la página
-showCalendar();
+
 
 // Eventos para cambiar de mes
 
