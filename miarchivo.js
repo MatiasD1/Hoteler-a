@@ -29,7 +29,7 @@ class Habitacion {
 }
 
 // Subclase para habitaciones categoria Bronce
-class HabitacionUnaEstrella extends Habitacion {
+class HabitacionBronce extends Habitacion {
     constructor(numero, capacidad, precio, disponible) {
         super(numero, capacidad, precio, disponible);
         this.categoria = "Bronce";//this en el constructor
@@ -38,7 +38,7 @@ class HabitacionUnaEstrella extends Habitacion {
 }
 
 // Subclase para habitaciones categoria Plata
-class HabitacionDosEstrellas extends Habitacion {
+class HabitacionPlata extends Habitacion {
     constructor(numero, capacidad, precio, disponible) {
         super(numero, capacidad, precio, disponible);
         this.categoria = "Plata";
@@ -47,7 +47,7 @@ class HabitacionDosEstrellas extends Habitacion {
 }
 
 // Subclase para habitaciones categoria Oro
-class HabitacionTresEstrellas extends Habitacion {
+class HabitacionOro extends Habitacion {
     constructor(numero, capacidad, precio, disponible) {
         super(numero, capacidad, precio, disponible);
         this.categoria = "Oro";
