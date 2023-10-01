@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Reservas</h1>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Inicio</a></li>
+                <li><a href="/habitaciones.html">Habitaciones</a></li>
+                <li><a href="/servicios.html">Servicios</a></li>
+                <li><a href="/reservas.html">Reservas</a></li>
+                <li><a href="/contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Aquí puedes agregar el formulario de reservas -->
+    <section class="reserva">
+        <h2>Reserva tu Habitación</h2>
+        <form action="procesar_reserva.php" method="post" id="formularioReserva">
+            <!-- Agrega los campos del formulario según tus necesidades -->
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="fecha_llegada">Fecha de Llegada:</label>
+            <input type="date" id="fecha_llegada" name="fecha_llegada" required>
+            
+            <label for="fecha_salida">Fecha de Salida:</label>
+            <input type="date" id="fecha_salida" name="fecha_salida" required>
+            
+            <label for="num_personas">Número de Personas:</label>
+            <input type="number" id="num_personas" name="num_personas" min="1" max="4" required>
+            
+            <label for="habitacion">Habitación:</label>
+            <select id="habitacion" name="habitacion" required>
+                <option value="" disabled selected>Seleccione una categoría</option>
+                <option value="oro">Oro</option>
+                <option value="plata">Plata</option>
+                <option value="bronce">Bronce</option>
+            </select>
+
+            <label for="servicioEspecial">Servicios especiales:</label>
+            <select id="servicioEspecial" name="servicioEspecial" multiple>
+                <option value="gimnasio">Gimnasio</option>
+                <option value="spa">Spa</option>
+                <option value="clases de Surf">Clases de Surf</option>
+            </select>
+            <div class="button-div">
+                <button type="button" id="confirmarServicios">Aceptar</button>
+                <button type="button" id="borrarServicios">Borrar</button>
+            </div>
+            
+            <div id="seleccionados">
+                
+                <ul id="listaSeleccionados">
+                </ul>
+            </div>
+
+            <div class="cta-button-div">
+                <button type="submit" class="cta-button">Enviar Reserva</button>
+            </div>
+            
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Hotel Ejemplo. Todos los derechos reservados.</p>
+    </footer>
+    <script src="reservas.js"></script>
+</body>
+</html>
