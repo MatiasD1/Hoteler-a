@@ -1,3 +1,88 @@
+//RESERVAS 
+
+const servicios = [
+    { servicio: 'Gimnasio', precio: 200 },
+    { servicio: 'Spa', precio: 400 },
+    { servicio: 'Clases de Surf', precio: 500 }
+];
+
+class Habitacion {
+    constructor(numero, capacidad, precio, disponible) {
+        this.numero = numero; //Numero de la habitacion
+        this.capacidad = capacidad; // Capacidad máxima de personas en la habitación
+        this.precio = precio; // Precio base de la habitación
+        this.disponible = disponible; // Indica si la habitación está disponible
+    }   
+}
+
+// Subclase para habitaciones categoria Bronce
+class HabitacionBronce extends Habitacion {
+    constructor(numero, capacidad, precio, disponible) {
+        super(numero, capacidad, precio, disponible);
+        this.categoria = "Bronce";//this en el constructor
+        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n"];
+    }
+}
+
+// Subclase para habitaciones categoria Plata
+class HabitacionPlata extends Habitacion {
+    constructor(numero, capacidad, precio, disponible) {
+        super(numero, capacidad, precio, disponible);
+        this.categoria = "Plata";
+        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n", "Balcón privado\n", "Mini bar\n", "Servicio de transporte local\n"];
+    }
+}
+
+// Subclase para habitaciones categoria Oro
+class HabitacionOro extends Habitacion {
+    constructor(numero, capacidad, precio, disponible) {
+        super(numero, capacidad, precio, disponible);
+        this.categoria = "Oro";
+        this.servicios = ["Servicio a la habitación\n", "Wi-Fi gratuito\n", "Televisión por cable\n", "Balcón privado\n", "Mini bar\n", "Servicio de transporte local\n", "Servicio de transporte al aeropuerto\n", "Jacuzzi\n", "Vista al mar\n"];
+    }
+}
+function calculaTarifa(cantDias) {
+    let tarifa = cantDias * costoHabitacion; // Tarifa base por la habitación
+
+    for (let i = 0; i < opcionesSeleccionadas.length; i++) {
+        for (let j = 0; j < servicios.length; j++) {
+            if (opcionesSeleccionadas[i] === servicios[j].servicio) {
+                tarifa += servicios[j].precio;
+                break; // Salir del bucle interno cuando se encuentre el servicio
+            }
+        }
+    }
+    return tarifa;
+}
+
+const habitaciones = {//Deberia hacer un array para cada categoria
+    habitacion1: new HabitacionBronce(1, 4, 50, true),
+    habitacion2: new HabitacionPlata(2, 4, 100, false),
+    habitacion3: new HabitacionOro(3, 4, 150, true),
+    habitacion4: new HabitacionOro(4, 4, 150, false),
+    habitacion5: new HabitacionOro(5, 4, 150, false),
+    habitacion6: new HabitacionOro(6, 4, 150, true),
+    habitacion7: new HabitacionOro(7, 4, 150, true),
+
+};
+
+// Convertir el objeto de habitaciones en dos arrays 
+const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === true);
+const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
+
+//let CantHabitacionesDisponibles = habitacionesDisponibles.length; ///
+
+/*for (let i = 0; i < habitacionesDisponibles.length; i++) {
+    const habitacion = habitacionesDisponibles[i];
+    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
+}
+
+for (let i = 0; i < habitacionesNoDisponibles.length; i++) {
+    const habitacion = habitacionesNoDisponibles[i];
+    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
+}*/
+//
+//FORMULARIO
 // Obtén una referencia al formulario por su ID
 const formularioReserva = document.getElementById('formularioReserva');
 
@@ -11,8 +96,8 @@ formularioReserva.addEventListener('submit', function (event) {
     const fechaLlegada = document.getElementById('fecha_llegada').value;
     const fechaSalida = document.getElementById('fecha_salida').value;
     const numPersonas = document.getElementById('num_personas').value;
-    const habitacion = document.getElementById('habitacion').value;
-   
+    const categHabitacion = document.getElementById('habitacion').value;
+  
     const diferenciaMilisegundos = Math.abs(fechaSalida - fechaLlegada);
 
     // Calcula la diferencia en días
@@ -25,15 +110,33 @@ formularioReserva.addEventListener('submit', function (event) {
         console.log('No hay más de 15 días de diferencia entre las fechas.');
     }
 
-    // Otra forma de obtener las opciones como en el let opcionesSeleccionadas = Array.from(selectServicios.selectedOptions).map(option => option.value); 
-    /*const servicioEspecialElement = document.getElementById('servicioEspecial');
-    const opcionesSeleccionadas = [];
-    for (let i = 0; i < servicioEspecialElement.options.length; i++) {
-        if (servicioEspecialElement.options[i].selected) {
-            opcionesSeleccionadas.push(servicioEspecialElement.options[i].value);
-        }
-    }*/
+    
+let habitacionEncontrada = null;
 
+for (const hab in habitaciones) {
+  if (habitaciones.hasOwnProperty(hab)) {
+    const habitacion = habitaciones[hab];
+    
+    if (habitacion instanceof HabitacionBronce && categHabitacion === "bronce") {
+      habitacionEncontrada = habitacion;
+      break;
+    } else if (habitacion instanceof HabitacionPlata && categHabitacion === "plata") {
+      habitacionEncontrada = habitacion;
+      break;
+    } else if (habitacion instanceof HabitacionOro && categHabitacion === "oro") {
+      habitacionEncontrada = habitacion;
+      break;
+    }
+  }
+}
+
+if (habitacionEncontrada) {
+  alert(`Habitación ${habitacionEncontrada.numero} - Categoría: "${categHabitacion} disponible.".`);
+} else {
+  alert(`Lo sentimos, no se encuentran habitaciones disponibles para la categoría "${categHabitacion}".`);
+}
+
+  
     //CONTROL DE ERRORES
     let hayErrores = false;
 
@@ -46,11 +149,9 @@ formularioReserva.addEventListener('submit', function (event) {
     if (hayErrores) {
         return;
     }
-    // Obtén una referencia al botón por su ID
-
-
-
-
+    let selectServicios = document.getElementById('servicioEspecial');
+    let opcionesSeleccionadas = Array.from(selectServicios.selectedOptions).map(option => option.value);
+    
     // MUESTRO EL CONTENIDO EN LA CONSOLA
     console.log('Nombre:', nombre);
     console.log('Fecha de Llegada:', fechaLlegada);
@@ -60,42 +161,19 @@ formularioReserva.addEventListener('submit', function (event) {
     console.log('Servicios Especiales:', opcionesSeleccionadas);
     
     // Enviar los datos a través de AJAX 
+
+    const tarifa = calculaTarifa(cantDias);
+
+alert(`RESUMEN DE LA RESERVA\n
+Nombre: ${nombre}
+\nCantidad de Personas: ${numPersonas}` + 
+(opcionesSeleccionadas.length !== 0 ? "\n\nServicios Especiales:" + opcionesSeleccionadas.map(servicio => "\n- " + servicio).join("") : "") + //map toma cada servicio y lo transforma en una cadena que comienza con un guión ("- ") //.join("") sirve para unir todas estas cadenas en una sola, sin ningún carácter de separación adicional.  
+`\n\nFecha de llegada: ${fecha_llegada}
+\n\nFecha de llegada: ${fecha_salida}
+\nReserva: Habitación ${habitacionEncontrada.numero}
+\nCategoria: ${categHabitacion}
+\nTarifa total: $${tarifa}`); 
+
 });
 
-// Obtén una referencia al botón de "Aceptar" por su ID
-let botonAceptar = document.getElementById('confirmarServicios');
-let botonBorrar = document.getElementById('borrarServicios');
-// Agrega un evento de clic al botón
-botonAceptar.addEventListener("click", () => {
-    // Obtén el elemento <select> por su ID
-    let selectServicios = document.getElementById('servicioEspecial');
-    
-    // Obtén las opciones seleccionadas en el select múltiple
-    let opcionesSeleccionadas = Array.from(selectServicios.selectedOptions).map(option => option.value);
-    
-    // Obtén el Div seleccionados y el elemento <ul> donde se mostrarán las opciones seleccionadas
-    let divSeleccionados = document.getElementById("seleccionados");
-    let ulSeleccionados = document.getElementById('listaSeleccionados');
-    
-    
-    // Borra cualquier contenido anterior en la lista de seleccionados
-    
-    ulSeleccionados.innerHTML = '';
-
-    // Agrega cada opción seleccionada como un elemento <li> en la lista
-    if(opcionesSeleccionadas == '')
-        alert('Usted no ha seleccionado ningún servicio aún.');
-    else{
-        let p = document.createElement('p');//nombre del nuevo elemento (div,img,p.etc)
-        p.textContent = 'Servicios Seleccionados:';//le agrego el contenido
-        
-        divSeleccionados.insertBefore(p,divSeleccionados.firstChild);//Para insertar al principio del contenedorL: Insertar antes (elemento a insertar, contendor.firstchild[o sea, el primer elemento del contenedor])
-        opcionesSeleccionadas.forEach((opcion) => {
-            let li = document.createElement('li');
-            li.textContent = opcion;
-            ulSeleccionados.appendChild(li);
-        });
-    }
-    
-});
 
