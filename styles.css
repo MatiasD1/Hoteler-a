@@ -34,17 +34,17 @@ nav a {
     color: #fff;
 }
 
-.hero {
+.presentacion {
     text-align: center;
     padding: 100px 0;
 }
 
-.hero h2 {
+.presentacion h2 {
     font-size: 36px;
     margin-bottom: 20px;
 }
 
-.cta-button {
+.boton {
     display: inline-block;
     padding: 10px 20px;
     background-color: #333;
@@ -54,7 +54,7 @@ nav a {
     transition: background-color 0.3s;
 }
 
-.cta-button:hover {
+.boton:hover {
     background-color: #555;
 }
 
@@ -134,7 +134,7 @@ nav a {
 }
 
 /*Ya definido en la parte superior
-.cta-button {
+.boton {
     display: inline-block;
     padding: 10px 20px;
     background-color: #333;
@@ -144,7 +144,7 @@ nav a {
     transition: background-color 0.3s;
 }
 
-.cta-button:hover {
+.boton:hover {
     background-color: #555;
 }*/
 
@@ -241,7 +241,7 @@ nav a {
     font-size: 16px;
 }
 
-.cta-button-div{/*Recordar que las clases se preceden por un .*/ 
+.boton-div{/*Recordar que las clases se preceden por un .*/ 
     text-align: center;
 }
 /*Contacto*/ 

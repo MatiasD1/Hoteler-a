@@ -1,5 +1,6 @@
 //RESERVAS 
 
+//Array de objetos
 const servicios = [
     { servicio: 'gimnasio', precio: 200 },
     { servicio: 'spa', precio: 400 },
@@ -14,7 +15,7 @@ class Habitacion {
     }   
 }
 
-// Subclase para habitaciones categoria Bronce
+// Subclases para las categorias de las habitaciones
 class HabitacionBronce extends Habitacion {
     constructor(numero, capacidad, disponible) {
         super(numero, capacidad, disponible);
@@ -24,7 +25,6 @@ class HabitacionBronce extends Habitacion {
     }
 }
 
-// Subclase para habitaciones categoria Plata
 class HabitacionPlata extends Habitacion {
     constructor(numero, capacidad, disponible) {
         super(numero, capacidad, disponible);
@@ -34,7 +34,6 @@ class HabitacionPlata extends Habitacion {
     }
 }
 
-// Subclase para habitaciones categoria Oro
 class HabitacionOro extends Habitacion {
     constructor(numero, capacidad, disponible) {
         super(numero, capacidad, disponible);
@@ -43,24 +42,24 @@ class HabitacionOro extends Habitacion {
         this.precio = 2500; 
     }
 }
-function calculaTarifa(habitacionEncontrada, numPersonas, opcionesSeleccionadas) {
+function calculaTarifa(habitacionEncontrada, numPersonas, opcionesServiciosSeleccionadas) {
     
-    let tarifa = numPersonas * habitacionEncontrada.precio; // Tarifa base por la habitación
+    let tarifa = numPersonas * habitacionEncontrada.precio; 
 
-    opcionesSeleccionadas.forEach(servicioSeleccionado => {
-        console.log('Opciones ' + servicioSeleccionado);
+    opcionesServiciosSeleccionadas.forEach(servicioSeleccionado => {
+        //console.log('Opciones ' + servicioSeleccionado);
         for (let j = 0; j < servicios.length; j++) {
-            console.log('Servicio ' + servicios[j].servicio);
+            //console.log('Servicio ' + servicios[j].servicio);
             if (servicioSeleccionado === servicios[j].servicio) {
                 tarifa += servicios[j].precio;
                 break; // Salir del bucle interno cuando se encuentre el servicio
             }
         }
-    });  
-    
+    }); 
     return tarifa;
-}
 
+}
+//Declaro un objeto habitaciones con sus propiedades
 const habitaciones = {//Deberia hacer un array para cada categoria
     habitacion1: new HabitacionBronce(1, 4, true),
     habitacion2: new HabitacionPlata(2, 4, false),
@@ -72,8 +71,10 @@ const habitaciones = {//Deberia hacer un array para cada categoria
 
 };
 
-// Convertir el objeto de habitaciones en dos arrays 
+// Convierto el objeto de habitaciones en dos arrays 
 const habitacionesDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === true);
+//Object.values() toma un objeto y crea un array con los valores de todas sus propiedades
+//.filter crea un array a partir de una condicion, en este caso que habitacion.disponible sea igual a true
 const habitacionesNoDisponibles = Object.values(habitaciones).filter(habitacion => habitacion.disponible === false);
 
 //let CantHabitacionesDisponibles = habitacionesDisponibles.length; ///
@@ -87,61 +88,78 @@ for (let i = 0; i < habitacionesNoDisponibles.length; i++) {
     const habitacion = habitacionesNoDisponibles[i];
     alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
 }*/
-//
+
 //FORMULARIO
-// Obtén una referencia al formulario por su ID
+//Obtiene una referencia al formulario por su ID
 const formularioReserva = document.getElementById('formularioReserva');
 
-//  función que se ejecuta cuando se selecciona submit y se envía el formulario
+//Declaro las variables para poder ser accedidas fuera del evento
+let nombre;
+let fechaLlegada;
+let fechaSalida;
+let numPersonas;
+let categHabitacion;
+let opcionesServiciosSeleccionadas;
+
+const reservas = [];
+
+//Vaciar LocalStorage
+//localStorage.clear();
+
+//Función que se ejecuta cuando se selecciona submit y se envía el formulario
 formularioReserva.addEventListener('submit', function (event) {
-    // Evita que el formulario se envíe automáticamente
+    //Evita que el formulario se envíe automáticamente
     event.preventDefault();
 
-    // Obtén los valores ingresados por el usuario en los campos del formulario
-    const nombre = document.getElementById('nombre').value;
-    const fechaLlegada = document.getElementById('fecha_llegada').value;
-    const fechaSalida = document.getElementById('fecha_salida').value;
-    const numPersonas = document.getElementById('num_personas').value;
-    const categHabitacion = document.getElementById('habitacion').value;
+    //Obtiene los valores ingresados por el usuario en los campos del formulario
+    nombre = document.getElementById('nombre').value;
+    fechaLlegada = document.getElementById('fecha_llegada').value;
+    fechaSalida = document.getElementById('fecha_salida').value;
+    numPersonas = document.getElementById('num_personas').value;
+    const categHabitacion = document.getElementById('categHabitacion').value;
 
-// Calcula la diferencia en milisegundos
-const diferenciaMilisegundos = Math.abs(fechaSalida - fechaLlegada);
+    const diferenciaMilisegundos = fechaSalida - fechaLlegada;
 
-// Calcula la diferencia en días
-const diferenciaDias = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-
-// Comprueba si la diferencia es mayor a 15 días
-if (diferenciaDias > 15) {
-    console.log('Hay más de 15 días de diferencia entre las fechas.');
-} else {
-    console.log('No hay más de 15 días de diferencia entre las fechas.');
-}
+    // Convierte la diferencia en milisegundos a días
+    const diferenciaDias = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
     
-let habitacionEncontrada = null;
+    //alert(`La diferencia entre las fechas es de ${diferenciaDias} días.`);
 
-for (const hab in habitacionesDisponibles) {
-  if (habitacionesDisponibles.hasOwnProperty(hab)) {
-    const habitacion = habitacionesDisponibles[hab];
+    // Comprueba si la diferencia es mayor a 15 días
+  /*  if (diferenciaDias > 15) {
+        console.log('Hay más de 15 días de diferencia entre las fechas.');
+    } else {
+        console.log('No hay más de 15 días de diferencia entre las fechas.');
+    }*/
     
-    if (habitacion instanceof HabitacionBronce && categHabitacion === "bronce") {
-      habitacionEncontrada = habitacion;
-      break;
-    } else if (habitacion instanceof HabitacionPlata && categHabitacion === "plata") {
-      habitacionEncontrada = habitacion;
-      break;
-    } else if (habitacion instanceof HabitacionOro && categHabitacion === "oro") {
-      habitacionEncontrada = habitacion;
-      break;
+    //Selecciona la primer habitacion disponible de la categoria seleccionada
+    let habitacionEncontrada = null;
+
+    for (const hab in habitacionesDisponibles) {
+    if (habitacionesDisponibles.hasOwnProperty(hab)) {//método para determinar si el objeto tiene una propiedad específica
+        const habitacion = habitacionesDisponibles[hab];
+        
+        if (habitacion instanceof HabitacionBronce && categHabitacion === "bronce") {
+        habitacionEncontrada = habitacion;
+        break;
+        } else if (habitacion instanceof HabitacionPlata && categHabitacion === "plata") {
+        habitacionEncontrada = habitacion;
+        break;
+        } else if (habitacion instanceof HabitacionOro && categHabitacion === "oro") {
+        habitacionEncontrada = habitacion;
+        break;
+        }
     }
-  }
-}
+    }
 
-if (habitacionEncontrada) {
-   alert(`Habitación ${habitacionEncontrada.numero} - Categoría: "${categHabitacion}" disponible.`);
-    habitacionEncontrada.disponible = false;
-} else {
-    alert(`Lo sentimos, no se encuentran habitaciones disponibles para la categoría "${categHabitacion}".`);
-}
+    if (habitacionEncontrada) {
+        //La funcion splice requiere el indice del elemento a eliminar
+        const indice = habitacionesDisponibles.indexOf(habitacionEncontrada);
+        habitacionesDisponibles.splice(indice,1)//indice y cantidad de elementos a eliminar a partir de allí  
+        habitacionesNoDisponibles.push(habitacionEncontrada)
+    } else {
+        alert(`Lo sentimos, no se encuentran habitaciones disponibles para la categoría "${categHabitacion}".`);
+    }
 
     //CONTROL DE ERRORES
     let hayErrores = false;
@@ -157,32 +175,106 @@ if (habitacionEncontrada) {
     }
 
     let selectServicios = document.getElementById('servicioEspecial');
-    let opcionesSeleccionadas = Array.from(selectServicios.selectedOptions).map(option => option.value);
+    opcionesServiciosSeleccionadas = Array.from(selectServicios.selectedOptions).map(option => option.value);
+    
+    //Almaceno los datos del LocalStorage
+
+    // Recupera la lista actual de reservas del localStorage, si existe
+    let reservas = JSON.parse(localStorage.getItem('datosReserva')) || [];
+
+    // Creo un objeto para almacenar los datos
+    const datosReserva = {
+        nombre: nombre,
+        fechaLlegada: fechaLlegada,
+        fechaSalida: fechaSalida,
+        numPersonas: numPersonas,
+        categHabitacion: habitacionEncontrada,
+        opcionesServiciosSeleccionadas: opcionesServiciosSeleccionadas
+    };
+
+    
+    reservas.push(datosReserva);
+    // Convierte el objeto en una cadena JSON
+    const datosReservaJSON = JSON.stringify(reservas);
+
+    // Almacena la cadena JSON en el localStorage
+    localStorage.setItem('datosReserva', datosReservaJSON);
+
+    // Proximamente: Enviar los datos a través de AJAX 
     
     // MUESTRO EL CONTENIDO EN LA CONSOLA
-    console.log('Nombre:', nombre);
-    console.log('Fecha de Llegada:', fechaLlegada);
-    console.log('Fecha de Salida:', fechaSalida);
-    console.log('Número de Personas:', numPersonas);
-    console.log('Habitación:', habitacion);
-    console.log('Servicios Especiales:', opcionesSeleccionadas);
-    
-    // Enviar los datos a través de AJAX 
 
-    const tarifa = calculaTarifa(habitacionEncontrada, numPersonas, opcionesSeleccionadas);
-    const serviciosSinComas = habitacionEncontrada.servicios.join('');
+    const tarifa = calculaTarifa(habitacionEncontrada, numPersonas, opcionesServiciosSeleccionadas);
+    const serviciosSinComas = habitacionEncontrada.servicios.join('');//Spread?
 
-console.log(`RESUMEN DE LA RESERVA\n
+console.log(`RESUMEN DE RESERVA\n
 Nombre: ${nombre}
-\nCantidad de Personas: ${numPersonas}` + 
-(opcionesSeleccionadas.length !== 0 ? "\n\nServicios Especiales:" + opcionesSeleccionadas.map(servicio => "\n- " + servicio).join("") : "") + //map toma cada servicio y lo transforma en una cadena que comienza con un guión ("- ") //.join("") sirve para unir todas estas cadenas en una sola, sin ningún carácter de separación adicional.  
-`\n\nFecha de llegada: ${fechaLlegada}
-Fecha de llegada: ${fechaSalida}
-\nReserva: Habitación ${habitacionEncontrada.numero}
-\nCategoria: ${categHabitacion}
+\nCantidad de Personas: ${numPersonas}` +   
+`\n\nFecha de llegada: ${fechaLlegada}             
+Fecha de salida: ${fechaSalida}
+\nReserva: Habitación ${habitacionEncontrada.numero} 
+\nCategoria: ${categHabitacion}                   
 \n${serviciosSinComas}
 Tarifa total: $${tarifa}`); 
+//<pre> para presentar el formato como lo escribo acá 
+Swal.fire({
+    title: 'Resumen de Reserva',
+    html: `<pre>
+${nombre}
 
+${numPersonas} personas.
+
+Fecha de llegada: ${fechaLlegada}
+Fecha de salida: ${fechaSalida}
+
+Habitación ${habitacionEncontrada.numero}
+
+Categoría: ${categHabitacion}
+
+Tarifa total: $${tarifa}
+</pre>`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Confirmar',
+    cancelButtonText: 'Cancelar',
+
+}).then((result) => {
+    if (result.isConfirmed) {
+        Swal.fire(
+            'Reserva confirmada',
+            'Te esperamos!',
+            'success'
+        )
+        console.log(reservas);
+    }
+})
+
+
+
+
+//Agregar el precio a los servicios seleccionados
+//Agregar precio a la categoria seleccionada 
+
+/*Revisar por qué no me lo muestra bien, a pesar cumplirse bien la funcion de eliminacion
+for (let i = 0; i < habitacionesDisponibles.length; i++) {
+    const habitacion = habitacionesDisponibles[i];
+    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
+}
+
+for (let i = 0; i < habitacionesNoDisponibles.length; i++) {
+    const habitacion = habitacionesNoDisponibles[i];
+    alert(`Habitación ${habitacion.numero} - Capacidad: ${habitacion.capacidad}, Precio: ${habitacion.precio}, Disponible: ${habitacion.disponible}`);
+}
+*/
 });
 
+/*//Recupera la cadena JSON del localStorage
+const datosReservaJSONRecup = sessionStorage.getItem('datosReserva');
+
+// Convierte la cadena JSON de vuelta a un objeto JavaScript
+const datosReservaRecup = JSON.parse(datosReservaJSON);
+
+*/
 
